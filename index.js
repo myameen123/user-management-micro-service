@@ -7,14 +7,17 @@ import bodyParser from "body-parser";
 import cors from "cors";
 dotenv.config();
 const app = express();
-app.use(
-  cors({
-    origin: "https://photohub-myameen.vercel.app", // Allow requests from this origin
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-    optionsSuccessStatus: 200,
-    exposedHeaders: ["Set-cookie"],
-  })
-);
+// app.use(
+//   cors({
+//     origin: "https://photohub-myameen.vercel.app", // Allow requests from this origin
+//     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+//     optionsSuccessStatus: 200,
+//     exposedHeaders: ["Set-cookie"],
+//   })
+// );
+
+app.options("*", cors()); // Enable preflight request handling for all routes
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: "10mb" }));
