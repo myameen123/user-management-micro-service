@@ -9,10 +9,10 @@ dotenv.config();
 const app = express();
 app.use(
   cors({
-    origin: "https://photohub-myameen.vercel.app", // Allow requests from this origin
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    origin: "https://photohub-myameen.vercel.app", // Replace with your exact frontend origin
+    credentials: true, // Allow cookies (if needed)
     optionsSuccessStatus: 200,
-    exposedHeaders: ["Set-cookie"],
+    exposedHeaders: ["Set-cookie"], // Add other headers if your frontend needs them
   })
 );
 
@@ -22,26 +22,14 @@ app.use(bodyParser.json({ limit: "10mb" }));
 connectDatabse();
 const PORT = process.env.PORT || 5000;
 
-// Middleware to set Access-Control-Allow-Origin header
-app.use((req, res, next) => {
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://photohub-myameen.vercel.app"
-  );
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
-
 app.listen(PORT, () => {
   console.log(`Server is listning at port ${PORT}`);
 });
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 // app.use("/api", eventRoutes);
+// app.use(cors({ ..., logLevel: "debug" }));
+
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "internal Server Error";
