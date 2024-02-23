@@ -7,22 +7,34 @@ import bodyParser from "body-parser";
 import cors from "cors";
 dotenv.config();
 const app = express();
-// app.use(
-//   cors({
-//     origin: "https://photohub-myameen.vercel.app", // Allow requests from this origin
-//     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-//     optionsSuccessStatus: 200,
-//     exposedHeaders: ["Set-cookie"],
-//   })
-// );
-
-app.options("*", cors()); // Enable preflight request handling for all routes
+app.use(
+  cors({
+    origin: "https://photohub-myameen.vercel.app", // Allow requests from this origin
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    optionsSuccessStatus: 200,
+    exposedHeaders: ["Set-cookie"],
+  })
+);
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: "10mb" }));
 connectDatabse();
 const PORT = process.env.PORT || 5000;
+
+// Middleware to set Access-Control-Allow-Origin header
+app.use((req, res, next) => {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://photohub-myameen.vercel.app"
+  );
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
 
 app.listen(PORT, () => {
   console.log(`Server is listning at port ${PORT}`);
