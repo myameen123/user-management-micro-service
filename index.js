@@ -25,6 +25,12 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is listning at port ${PORT}`);
 });
+
+app.get("/api/test", (req, res) => {
+  res.status(200).json({
+    message: "Success from user service",
+  });
+});
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 // app.use("/api", eventRoutes);
